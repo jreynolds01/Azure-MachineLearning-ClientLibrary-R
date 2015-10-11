@@ -3,3 +3,6 @@ maml/R/testing.R
 maml/R/discover.R
 maml/R/discover.R
 .Rproj.user
+
+# ignore the built file
+*.tar.gz
