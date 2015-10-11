@@ -1,6 +1,3 @@
-# API URLs ----------------------------------------------------------------
-
-prodURL = "https://management-tm.azureml.net"
 
 # Functions ---------------------------------------------------------------
 
@@ -19,15 +16,12 @@ getFramework <- function(tUrl, authToken) {
   # Collectors for API response
   h = RCurl::basicTextGatherer()
   hdr = RCurl::basicTextGatherer()
-
-  # Accept SSL certificates issued by public Certificate Authorities
-  curOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
   
   # Craft request header and execute
   auth = paste('Bearer', authToken, sep=' ')
   h$reset()
   RCurl::curlPerform(url = tUrl,
-              .opts = curOptions,
+              .opts = azureMlRCurlOptions,
               httpheader=c('Authorization' = auth, 'Content-Type' = "application/json", 'Accept' = "application/json"),
               writefunction = h$update,
               headerfunction = hdr$update,

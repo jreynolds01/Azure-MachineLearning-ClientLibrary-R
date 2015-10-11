@@ -324,9 +324,6 @@ publishWebService <- function(functionName, serviceName, inputSchema, outputSche
   inputSchema <- publishPreprocess(inputSchema)
   outputSchema <- publishPreprocess(outputSchema)
 
-  # Accept SSL certificates issued by public Certificate Authorities
-  options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
-
   # Get and encode the dependencies
   zipString = packDependencies(functionName)
 
@@ -370,6 +367,7 @@ publishWebService <- function(functionName, serviceName, inputSchema, outputSche
 
   # API call
   RCurl::httpPUT(url = sprintf(publishURL, wkID, guid), # defined above
+                 .opts = azureMlRCurlOptions,
                  httpheader=c('Authorization' = paste('Bearer', authToken, sep=' '),
                               'Content-Type' = 'application/json',
                               'Accept' = 'application/json'),
@@ -421,9 +419,6 @@ updateWebService <- function(functionName, serviceName, wsID, inputSchema, outpu
   inputSchema <- publishPreprocess(inputSchema)
   outputSchema <- publishPreprocess(outputSchema)
 
-  # Accept SSL certificates issued by public Certificate Authorities
-  options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
-
   # Get and encode the dependencies
   zipString = packDependencies(functionName)
 
@@ -464,6 +459,7 @@ updateWebService <- function(functionName, serviceName, wsID, inputSchema, outpu
 
   # API call
   RCurl::httpPUT(url = sprintf(publishURL, wkID, wsID),
+                 .opts = azureMlRCurlOptions,
                  httpheader=c('Authorization' = paste('Bearer', authToken, sep=' '),
                               'Content-Type' = 'application/json',
                               'Accept' = 'application/json'),

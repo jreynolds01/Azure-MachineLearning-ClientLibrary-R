@@ -372,7 +372,6 @@ callAPI <- function(apiKey, requestUrl, keyvalues,  globalParam, retryDelay) {
       }
       tries = tries + 1
       # Load RCurl package functions
-      options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
       h = RCurl::basicTextGatherer()
       hdr = RCurl::basicHeaderGatherer()
       # Construct request payload
@@ -390,6 +389,7 @@ callAPI <- function(apiKey, requestUrl, keyvalues,  globalParam, retryDelay) {
       # Make call to API with necessary components
       h$reset()
       RCurl::curlPerform(url = requestUrl,
+                         .opts = azureMlRCurlOptions,
                          httpheader=c('Content-Type' = "application/json", 'Authorization' = authz_hdr),
                          postfields=body,
                          writefunction = h$update,
