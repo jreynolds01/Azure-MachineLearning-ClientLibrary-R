@@ -6,3 +6,11 @@ maml/R/discover.R
 
 # ignore the built file
 *.tar.gz
+
+# ignore Rout files
+*.Rout
+
+# ignore .RData files in testthat
+AzureML/tests/testthat/*.RData
+AzureML/tests/testthat/gen_mlstudio_auth_file.R
+
