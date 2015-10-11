@@ -7,12 +7,14 @@
 #'
 #' @param tUrl the API URL
 #' @param authToken the authentication token
+#' @param verbose verbosity of RCurl::curlPerform
+#' @param ... additional arguments passed to RCurl::curlPerform
 #'
 #' @return the response as a named list
 #'
 #' @family discovery functions
 #' @keywords internal
-getFramework <- function(tUrl, authToken) {
+getFramework <- function(tUrl, authToken, verbose = TRUE, ...) {
   # Collectors for API response
   h = RCurl::basicTextGatherer()
   hdr = RCurl::basicTextGatherer()
@@ -25,7 +27,8 @@ getFramework <- function(tUrl, authToken) {
               httpheader=c('Authorization' = auth, 'Content-Type' = "application/json", 'Accept' = "application/json"),
               writefunction = h$update,
               headerfunction = hdr$update,
-              verbose = TRUE)
+              verbose = verbose,
+              ...)
 
   # Error handle response not long enough (no webservices)
   if (h$value() == "") {
@@ -51,6 +54,7 @@ getFramework <- function(tUrl, authToken) {
 #' @param wkID workspace ID
 #' @param authToken primary authorization token
 #' @param url the API url to make the call to, by default hits the Azure management API
+#' @param ... additional paramaters passed through to getFramework() and ultimately RCurl::curlPerform()
 #'
 #' @return Returns a list of lists, where each web service is represented as a nested named list with the following fields:
 #'
@@ -71,8 +75,8 @@ getFramework <- function(tUrl, authToken) {
 #' services = getWebServices("wsID", "authToken")
 #' serviceID = services[[1]]["Id"]
 #' }
-getWebServices <- function(wkID, authToken, url=prodURL) {
-  response = getFramework(sprintf("%s/workspaces/%s/webservices", url, wkID), authToken)
+getWebServices <- function(wkID, authToken, url=prodURL, ...) {
+  response = getFramework(sprintf("%s/workspaces/%s/webservices", url, wkID), authToken, ...)
   if (!is.list(response)) {
     stop("No web services found", call. = TRUE)
   }
