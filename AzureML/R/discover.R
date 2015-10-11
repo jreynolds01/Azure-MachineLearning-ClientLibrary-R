@@ -21,12 +21,13 @@ getFramework <- function(tUrl, authToken) {
   hdr = RCurl::basicTextGatherer()
 
   # Accept SSL certificates issued by public Certificate Authorities
-  options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
-
+  curOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
+  
   # Craft request header and execute
   auth = paste('Bearer', authToken, sep=' ')
   h$reset()
   RCurl::curlPerform(url = tUrl,
+              .opts = curOptions,
               httpheader=c('Authorization' = auth, 'Content-Type' = "application/json", 'Accept' = "application/json"),
               writefunction = h$update,
               headerfunction = hdr$update,
@@ -77,7 +78,7 @@ getFramework <- function(tUrl, authToken) {
 #' serviceID = services[[1]]["Id"]
 #' }
 getWebServices <- function(wkID, authToken, url=prodURL) {
-  response = getFramework(sprintf(paste(url,"/workspaces/%s/webservices",sep=""), wkID), authToken)
+  response = getFramework(sprintf("%s/workspaces/%s/webservices", url, wkID), authToken)
   if (!is.list(response)) {
     stop("No web services found", call. = TRUE)
   }
