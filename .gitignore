@@ -14,3 +14,5 @@ maml/R/discover.R
 AzureML/tests/testthat/*.RData
 AzureML/tests/testthat/gen_mlstudio_auth_file.R
 
+# ignore the Rcheck dir
+AzureML.Rcheck
