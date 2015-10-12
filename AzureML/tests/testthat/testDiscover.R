@@ -1,18 +1,45 @@
-# source("AzureML/tests/testthat/0-config.R")
-# if(interactive()) library(testthat)
-#
-# test_that("Can discover endpoints starting from workspace ID", {
-#  skip_on_cran() # requires internet connection
-#
-#
-#  webservices <- getWebServices(testID, testAuth)
+context("Discover API")
+
+test_that("Discovery function handles error correctly", {
+  skip_on_cran()
+  ## this should exist in package/test/testthat/
+  auth_file <- "mlstudio_auth_info.RData"
+  ## check for RData file:
+  if(!file.exists(auth_file)){
+    skip("skipping discovery - no authorization info available.")
+  }
+  
+  load(auth_file)
+  expect_error(getWebServices(wkID = "foo", 
+                              authToken = test_primary_auth_token,
+                              verbose = FALSE), 
+               "InvalidWorkspaceIdInvalid workspace ID provided. Verify the workspace ID is correct and try again.")
+})
+
+test_that("Can discover endpoints starting from workspace ID", {
+ skip_on_cran() # requires internet connection
+ ## this should exist in package/test/testthat/
+ auth_file <- "mlstudio_auth_info.RData"
+ ## check for RData file:
+ if(!file.exists(auth_file)){
+   skip("skipping discovery - no authorization info available.")
+ }
+  
+ load(auth_file)
+ webservices_result <- getWebServices(
+   wkID = test_workspace_id, 
+   authToken = test_primary_auth_token,
+   verbose = FALSE
+ )
+ expect_equal(is.list(webservices_result), TRUE)
+ 
 #  Sys.sleep(1)
 #  testWS <- getWSDetails(testID, testAuth, webservices[[1]]$Id)
 #  Sys.sleep(1)
 #  endpoints <- getEndpoints(testID, testAuth, testWS$Id)
 #  Sys.sleep(1)
 #  testEP <- getEPDetails(testID, testAuth, testWS$Id, endpoints[[1]]$Name)
-#
+# 
 #  expect_equal(length(webservices), 1)
 #  expect_equal(length(testWS), 7)
 #  expect_equal(length(endpoints),1)
@@ -21,9 +48,8 @@
 #  expect_equal(testWS$Id, endpoints[[1]]$WorkspaceId)
 #  expect_equal(endpoints[[1]]$WebServiceId, testEP$WebServiceId)
 #  expect_equal(endpoints[[1]]$Name, testEP$Name)
-# })
-#
-#
+})
+
 # test_that("API location is returned and able to be used immediately", {
 #  skip_on_cran() # requires internet connection
 #
@@ -38,7 +64,3 @@
 # })
 #
 #
-# test_that("Discovery function handles error correctly", {
-#  skip_on_cran()
-#  expect_error(getWebServices("foo", testAuth), "InvalidWorkspaceIdInvalid workspace ID provided. Verify the workspace ID is correct and try again.")
-# })
