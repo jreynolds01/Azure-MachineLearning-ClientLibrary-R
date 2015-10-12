@@ -4,12 +4,16 @@
 \alias{getFramework}
 \title{Abstraction for making GET requests.}
 \usage{
-getFramework(tUrl, authToken)
+getFramework(tUrl, authToken, verbose = TRUE, ...)
 }
 \arguments{
 \item{tUrl}{the API URL}
 
 \item{authToken}{the authentication token}
+
+\item{verbose}{verbosity of RCurl::curlPerform}
+
+\item{...}{additional arguments passed to RCurl::curlPerform}
 }
 \value{
 the response as a named list

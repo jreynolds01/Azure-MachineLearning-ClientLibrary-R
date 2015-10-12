@@ -4,7 +4,7 @@
 \alias{getWebServices}
 \title{Get Available Web Services.}
 \usage{
-getWebServices(wkID, authToken, url = prodURL)
+getWebServices(wkID, authToken, url = prodURL, ...)
 }
 \arguments{
 \item{wkID}{workspace ID}
@@ -12,6 +12,8 @@ getWebServices(wkID, authToken, url = prodURL)
 \item{authToken}{primary authorization token}
 
 \item{url}{the API url to make the call to, by default hits the Azure management API}
+
+\item{...}{additional paramaters passed through to getFramework() and ultimately RCurl::curlPerform()}
 }
 \value{
 Returns a list of lists, where each web service is represented as a nested named list with the following fields:
