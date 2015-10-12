@@ -13,10 +13,6 @@ azureMlRCurlOptions <- list(
   )
 )
 
-#azureMlRCurlOptions <- switch(R.version$os,
-#  darwin13.4.0 = NULL,
-#  list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
-#)
 
 ##################################
 ## for publishing
