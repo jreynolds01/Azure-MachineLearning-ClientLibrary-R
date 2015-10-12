@@ -1,8 +1,14 @@
-test_ws_id <- "FILLMEIN"
-test_auth_token <- "FILLMEIN"
-# do some checks.
-if(any(c(test_ws_id,test_auth_token) == "FILLMEIN")){
-  stop("You need to fill in these values with your workspace id and authorization token.")
-}else{
-  save(test_ws_id, test_auth_token, file = "mlstudio_auth_info.RData")
-}
+test_workspace_id <- NA
+test_primary_auth_token <- NA
+test_secondary_auth_token <- NA
+ 
+value_names <- grep("^test_", ls(), value = TRUE)
+
+values_are_filled <-vapply(value_names,
+       function(x) !is.na(get(x)),
+       FUN.VALUE = logical(1))
+
+stopifnot(values_are_filled)
+
+save(list = value_names, 
+     file = "mlstudio_auth_info.RData")
